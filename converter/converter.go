@@ -2,12 +2,15 @@ package converter
 
 import (
 	"encoding/json"
+	"flag"
 	"os"
 	"system-reporter/scanner"
 )
 
 func Converter() ([]scanner.Device, error) {
-	data, err := os.ReadFile("devices/devices.json")
+	configPath := flag.String("config", "devices.json", "Path to the devices configuration file")
+	flag.Parse()
+	data, err := os.ReadFile(*configPath)
 	if err != nil {
 
 		return nil, err
