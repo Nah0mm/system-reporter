@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"sync"
 	"system-reporter/converter"
+	"system-reporter/notification"
 	"time"
 )
 
 func main() {
 	startTime := time.Now()
 	devices, err := converter.Converter()
+	ereceiver := notification.Email{Address: "someone@gmail.com"}
+	smsreceiver := notification.SMS{PhoneNumber: "25187456987"}
 	if err != nil {
 		fmt.Println("Error occcured", err)
 		return
@@ -26,6 +29,8 @@ func main() {
 	}()
 	for info := range results {
 		fmt.Println(info)
+		notification.ExecuteSend(ereceiver)
+		notification.ExecuteSend(smsreceiver)
 	}
 	fmt.Println("Scan finished in ", time.Since(startTime))
 }
